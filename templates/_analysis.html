@@ -1,0 +1,28 @@
+{# Reusable strength block. Expects `analysis` (score, label, insights, suggestions). #}
+<div class="card">
+  <h2>Resume Strength Analysis</h2>
+  <div class="strength-top">
+    <div class="ring {{ analysis.score|tone }}" style="--p: {{ analysis.score }}">
+      <div><span><b>{{ analysis.score }}%</b><small>{{ analysis.label }}</small></span></div>
+    </div>
+    <ul class="insights">
+      {% for kind, text in analysis.insights %}
+        <li><span class="dot {{ kind }}">{{ '&#10003;'|safe if kind == 'ok' else '!' }}</span> {{ text }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Suggestions</h2>
+  {% if analysis.suggestions %}
+    {% for title, text in analysis.suggestions %}
+      <div class="suggest">
+        <div class="ic">&#128161;</div>
+        <div><b>{{ title }}</b><small>{{ text }}</small></div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="empty">Great work &mdash; no major improvements needed.</p>
+  {% endif %}
+</div>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="app">
+  <aside class="sidebar on-dark">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">&#128196;</span> SmartResume</a>
+    <nav>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if active == 'dashboard' }}">&#127968; Dashboard</a>
+      <a href="{{ url_for('create_resume') }}" class="{{ 'active' if active == 'create' }}">&#10133; Create Resume</a>
+      <a href="{{ url_for('my_resumes') }}" class="{{ 'active' if active == 'resumes' }}">&#128193; My Resumes</a>
+      <a href="{{ url_for('strength') }}" class="{{ 'active' if active == 'strength' }}">&#128200; Resume Strength</a>
+      <a href="{{ url_for('profile') }}" class="{{ 'active' if active == 'profile' }}">&#128100; Profile</a>
+      <a href="{{ url_for('logout') }}">&#128682; Logout</a>
+    </nav>
+  </aside>
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

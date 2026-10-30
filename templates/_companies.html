@@ -1,0 +1,30 @@
+{# Reusable company matches. Expects `companies` list. #}
+<div class="card">
+  <h2>&#127970; Verified Companies Matching Your Skills</h2>
+  {% if companies %}
+    <p style="color:var(--muted);font-size:14px;margin-top:0">
+      {{ companies|length }} verified compan{{ 'y' if companies|length == 1 else 'ies' }} match at least one of your skills, best match first.
+    </p>
+    <div class="company-grid">
+      {% for c in companies %}
+      <div class="card company">
+        <h3>{{ c.name }} <span class="verified">&#10003; Verified</span></h3>
+        <div class="meta">{{ c.industry }} &middot; {{ c.location }}</div>
+        <div><b>{{ c.pct }}%</b> skill match</div>
+        <div class="bar"><span style="width: {{ c.pct }}%"></span></div>
+        <div class="label-sm">Matched skills</div>
+        <div class="chips">{% for s in c.matched %}<span class="chip hit">{{ s }}</span>{% endfor %}</div>
+        {% if c.missing %}
+          <div class="label-sm">Skills to add</div>
+          <div class="chips">{% for s in c.missing %}<span class="chip miss">{{ s }}</span>{% endfor %}</div>
+        {% endif %}
+        <div class="label-sm">Typical roles</div>
+        <div style="font-size:13px;margin-bottom:10px">{{ c.roles }}</div>
+        <a href="{{ c.website }}" target="_blank" rel="noopener">Visit careers site &rarr;</a>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty">No verified companies match yet. Add more skills (e.g. Python, SQL, Java, HTML, AWS) to see matches.</p>
+  {% endif %}
+</div>

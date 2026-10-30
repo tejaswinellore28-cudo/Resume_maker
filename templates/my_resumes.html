@@ -1,0 +1,31 @@
+{% extends "app_layout.html" %}
+{% block title %}My Resumes - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>&#128193; My Resumes</h1><p>Open a resume to see its strength and matching companies.</p></div>
+  <a class="btn" href="{{ url_for('create_resume') }}">+ New Resume</a>
+</div>
+<div class="card">
+  {% if resumes %}
+  <table>
+    <tr><th>Title</th><th>Role</th><th>Last Updated</th><th>Strength</th><th>Action</th></tr>
+    {% for r in resumes %}
+    <tr>
+      <td>{{ r.title }}</td>
+      <td>{{ r.job_title }}</td>
+      <td>{{ r.updated_at|day }}</td>
+      <td><span class="badge {{ r.strength|tone }}">{{ r.strength }}%</span></td>
+      <td style="display:flex;gap:8px">
+        <a class="btn outline small" href="{{ url_for('view_resume', resume_id=r.id) }}">View</a>
+        <form method="post" action="{{ url_for('delete_resume', resume_id=r.id) }}" onsubmit="return confirm('Delete this resume?');">
+          <button class="btn danger small" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p class="empty">You haven't created a resume yet. <a href="{{ url_for('create_resume') }}">Create one now</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}

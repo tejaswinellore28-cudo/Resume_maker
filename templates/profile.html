@@ -1,0 +1,14 @@
+{% extends "app_layout.html" %}
+{% block title %}Profile - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>&#128100; Profile</h1><p>Your details are used to pre-fill new resumes.</p></div>
+</div>
+<form class="card" method="post" style="max-width:560px">
+  <div class="field"><label>Full Name</label><input type="text" name="name" value="{{ user.name }}" required></div>
+  <div class="field"><label>Email</label><input type="email" value="{{ user.email }}" disabled></div>
+  <div class="field"><label>Phone</label><input type="tel" name="phone" value="{{ user.phone }}"></div>
+  <div class="field"><label>Location</label><input type="text" name="location" value="{{ user.location }}" placeholder="City, State"></div>
+  <button class="btn" type="submit">Save Profile</button>
+</form>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "app_layout.html" %}
+{% block title %}Resume Strength - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>&#128737; Resume Strength</h1>
+    <p>Upload an existing resume (or paste its text) to check its strength and find matching companies.</p>
+  </div>
+</div>
+
+<div class="two-col">
+  <form class="card" method="post" enctype="multipart/form-data">
+    <div class="dropzone">
+      <div class="big">&#9729;&#65039;</div>
+      <b>Upload Your Resume</b>
+      <p style="color:var(--muted);font-size:13px;margin:4px 0 12px">Supported: DOCX, TXT (PDF needs the optional pypdf package). Max 5 MB.</p>
+      <input type="file" name="resume_file" accept=".pdf,.docx,.txt">
+    </div>
+    <div class="field">
+      <label>...or paste your resume text</label>
+      <textarea name="resume_text" rows="8" placeholder="Paste your resume here. Use headings like Summary, Skills, Experience, Education."></textarea>
+    </div>
+    <button class="btn" type="submit">Analyze Resume</button>
+  </form>
+
+  {% if analysis %}
+  <div class="stack">
+    {% include "_analysis.html" %}
+    {% if analysis.skills_found %}
+    <div class="card">
+      <h2>Skills detected</h2>
+      <div class="chips">{% for s in analysis.skills_found %}<span class="chip hit">{{ s }}</span>{% endfor %}</div>
+    </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="card"><p class="empty">Your analysis will appear here.</p></div>
+  {% endif %}
+</div>
+
+{% if analysis %}
+<div style="margin-top:24px">
+  {% include "_companies.html" %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "app_layout.html" %}
+{% block title %}{{ r.title }} - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>{{ r.title }}</h1><p>Created {{ r.created_at|day }}</p></div>
+  <div class="no-print" style="display:flex;gap:10px">
+    <button class="btn" onclick="window.print()">Download PDF</button>
+    <a class="btn ghost" href="{{ url_for('my_resumes') }}">Back</a>
+  </div>
+</div>
+
+<div class="view-grid">
+  <div class="resume-sheet">
+    <h1>{{ r.full_name }}</h1>
+    <div class="role">{{ r.job_title }}</div>
+    <div class="contact">{{ r.email }} &nbsp;|&nbsp; {{ r.phone }} &nbsp;|&nbsp; {{ r.location }}</div>
+
+    {% if r.summary %}<h3>Summary</h3><p>{{ r.summary }}</p>{% endif %}
+    {% if skills %}
+      <h3>Skills</h3>
+      <div class="chips">{% for s in skills %}<span class="chip">{{ s }}</span>{% endfor %}</div>
+    {% endif %}
+    {% if r.experience %}
+      <h3>Experience &amp; Projects</h3>
+      <ul>{% for line in r.experience.splitlines() if line.strip() %}<li>{{ line }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if r.education %}
+      <h3>Education</h3>
+      <ul>{% for line in r.education.splitlines() if line.strip() %}<li>{{ line }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+
+  <div class="stack no-print">
+    {% include "_analysis.html" %}
+  </div>
+</div>
+
+<div class="no-print" style="margin-top:24px">
+  {% include "_companies.html" %}
+</div>
+{% endblock %}

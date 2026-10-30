@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - SmartResume{% endblock %}
+{% block body %}
+<div class="auth">
+  <div class="auth-side on-dark">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">&#128196;</span> SmartResume</a>
+    <div>
+      <blockquote>"Your career story deserves a great first page."</blockquote>
+      <p>Create an account to build resumes, check their strength and find matching companies.</p>
+    </div>
+    <div class="art">&#128188;</div>
+  </div>
+  <div class="auth-main">
+    <form class="auth-card" method="post">
+      <h1>Create Account</h1>
+      <div class="sub">It only takes a minute</div>
+      <div class="field">
+        <input type="text" name="name" placeholder="Full name" value="{{ form.get('name', '') }}" required autofocus>
+      </div>
+      <div class="field">
+        <input type="email" name="email" placeholder="you@example.com" value="{{ form.get('email', '') }}" required>
+      </div>
+      <div class="field">
+        <input type="password" name="password" placeholder="Password (min 6 characters)" minlength="6" required>
+      </div>
+      <button class="btn block" type="submit">Sign Up</button>
+      <div class="foot">Already have an account? <a href="{{ url_for('login') }}">Login</a></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not found - SmartResume{% endblock %}
+{% block body %}
+<div class="notfound">
+  <h1>404</h1>
+  <p>That page could not be found.</p>
+  <a class="btn" href="{{ url_for('index') }}">Go home</a>
+</div>
+{% endblock %}

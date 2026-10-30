@@ -1,0 +1,145 @@
+{% extends "app_layout.html" %}
+{% block title %}Create Resume - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>&#128221; Create Resume</h1>
+    <p>Fill in your details and create a professional resume.</p>
+  </div>
+</div>
+
+<div class="stepper" id="stepper">
+  <div class="step-dot active"><i>1</i>Personal Info</div>
+  <div class="step-dot"><i>2</i>Education</div>
+  <div class="step-dot"><i>3</i>Skills</div>
+  <div class="step-dot"><i>4</i>Experience</div>
+  <div class="step-dot"><i>5</i>Review</div>
+</div>
+
+<form method="post" id="resumeForm" class="card">
+  <!-- Step 1 -->
+  <div class="step-panel active">
+    <h2>Personal Information</h2>
+    <div class="grid-2">
+      <div class="field"><label>Full Name <span class="req">*</span></label>
+        <input type="text" name="full_name" value="{{ form.get('full_name', '') }}" required></div>
+      <div class="field"><label>Email <span class="req">*</span></label>
+        <input type="email" name="email" value="{{ form.get('email', '') }}" required></div>
+      <div class="field"><label>Phone Number <span class="req">*</span></label>
+        <input type="tel" name="phone" value="{{ form.get('phone', '') }}" required></div>
+      <div class="field"><label>Location <span class="req">*</span></label>
+        <input type="text" name="location" value="{{ form.get('location', '') }}" placeholder="City, State" required></div>
+      <div class="field"><label>Professional Title <span class="req">*</span></label>
+        <input type="text" name="job_title" value="{{ form.get('job_title', '') }}" placeholder="e.g. Software Developer" required></div>
+      <div class="field"><label>Resume Name</label>
+        <input type="text" name="title" value="{{ form.get('title', '') }}" placeholder="e.g. Software Developer Resume"></div>
+      <div class="field full"><label>Summary</label>
+        <textarea name="summary" placeholder="2-3 lines about your strengths, experience and goals.">{{ form.get('summary', '') }}</textarea></div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-panel">
+    <h2>Education</h2>
+    <div class="field">
+      <label>Education (one entry per line)</label>
+      <textarea name="education" rows="6" placeholder="B.Tech in Computer Science, JNTU Kakinada, 2025 (CGPA 8.2)&#10;Intermediate (MPC), Narayana Junior College, 2021">{{ form.get('education', '') }}</textarea>
+      <small>Format: Degree, Institution, Year.</small>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-panel">
+    <h2>Skills</h2>
+    <div class="field">
+      <label>Skills (separate with commas)</label>
+      <textarea name="skills" rows="5" placeholder="Python, SQL, HTML, CSS, JavaScript, Git, Communication">{{ form.get('skills', '') }}</textarea>
+      <small>Your skills are matched against verified companies, so list tools, languages and soft skills.</small>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step-panel">
+    <h2>Experience &amp; Projects</h2>
+    <div class="field">
+      <label>Experience / Internships / Projects (one per line)</label>
+      <textarea name="experience" rows="8" placeholder="Developed a student management system in Python and SQLite, reducing manual work by 40%&#10;Built a responsive portfolio website using HTML and CSS">{{ form.get('experience', '') }}</textarea>
+      <small>Start with action verbs and include numbers (e.g. 40%, 500+ users) to improve your strength score.</small>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step-panel">
+    <h2>Review</h2>
+    <p style="color:var(--muted);margin-top:0">Check your details. After you create the resume you'll see its strength score, suggestions and matching verified companies.</p>
+    <dl class="review-list" id="reviewList"></dl>
+  </div>
+
+  <div class="wizard-actions">
+    <button type="button" class="btn ghost" id="backBtn" style="display:none">Back</button>
+    <button type="button" class="btn" id="nextBtn">Next</button>
+    <button type="submit" class="btn" id="submitBtn" style="display:none">Create Resume</button>
+    <a class="btn ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+  </div>
+</form>
+
+<script>
+(function () {
+  var panels = document.querySelectorAll('.step-panel');
+  var dots = document.querySelectorAll('.step-dot');
+  var back = document.getElementById('backBtn');
+  var next = document.getElementById('nextBtn');
+  var submit = document.getElementById('submitBtn');
+  var form = document.getElementById('resumeForm');
+  var step = 0;
+
+  function show(n) {
+    step = n;
+    panels.forEach(function (p, i) { p.classList.toggle('active', i === n); });
+    dots.forEach(function (d, i) {
+      d.classList.toggle('active', i === n);
+      d.classList.toggle('done', i < n);
+    });
+    back.style.display = n > 0 ? '' : 'none';
+    next.style.display = n < panels.length - 1 ? '' : 'none';
+    submit.style.display = n === panels.length - 1 ? '' : 'none';
+    if (n === panels.length - 1) buildReview();
+    window.scrollTo(0, 0);
+  }
+
+  function valid() {
+    var fields = panels[step].querySelectorAll('input, textarea');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+
+  function val(name) { return form.elements[name].value.trim() || '-'; }
+
+  function buildReview() {
+    var rows = [
+      ['Name', val('full_name')], ['Email', val('email')], ['Phone', val('phone')],
+      ['Location', val('location')], ['Title', val('job_title')], ['Summary', val('summary')],
+      ['Education', val('education')], ['Skills', val('skills')], ['Experience', val('experience')]
+    ];
+    var dl = document.getElementById('reviewList');
+    dl.innerHTML = '';
+    rows.forEach(function (r) {
+      var dt = document.createElement('dt'); dt.textContent = r[0];
+      var dd = document.createElement('dd'); dd.textContent = r[1];
+      dl.appendChild(dt); dl.appendChild(dd);
+    });
+  }
+
+  next.addEventListener('click', function () { if (valid()) show(step + 1); });
+  back.addEventListener('click', function () { show(step - 1); });
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && step < panels.length - 1) {
+      e.preventDefault();
+      if (valid()) show(step + 1);
+    }
+  });
+})();
+</script>
+{% endblock %}

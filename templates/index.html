@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}SmartResume - Build Your Dream Resume{% endblock %}
+{% block body %}
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">&#128196;</span> SmartResume</a>
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="#features">Features</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="actions">
+    {% if user %}
+      <a class="btn" href="{{ url_for('dashboard') }}">Dashboard</a>
+    {% else %}
+      <a class="btn outline" href="{{ url_for('login') }}">Login</a>
+      <a class="btn" href="{{ url_for('signup') }}">Sign Up</a>
+    {% endif %}
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Build Your<br>Dream Resume<br>with <span>Smart Scoring</span></h1>
+    <p>Create professional resumes, see your resume strength instantly, and discover verified
+       companies that match your skills. Your career, our priority.</p>
+    <div class="cta">
+      <a class="btn" href="{{ url_for('signup') }}">Get Started</a>
+      <a class="btn ghost" href="#features">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="paper">
+      <div class="t">RESUME</div>
+      <div class="avatar"></div>
+      <div class="line"></div><div class="line"></div><div class="line s"></div>
+      <div class="line"></div><div class="line"></div><div class="line s"></div>
+    </div>
+    <span class="chip-float a">&#10024; Strength Score</span>
+    <span class="chip-float b">&#9989; ATS Friendly</span>
+    <span class="chip-float c">&#127970; Company Match</span>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="feature"><div class="ic">&#128221;</div><div><b>Create Resume</b><small>Build professional resumes in minutes</small></div></div>
+  <div class="feature"><div class="ic">&#128200;</div><div><b>Check Strength</b><small>Get a score and tips for every resume</small></div></div>
+  <div class="feature"><div class="ic">&#127970;</div><div><b>Match Companies</b><small>See verified companies that fit your skills</small></div></div>
+  <div class="feature"><div class="ic">&#128274;</div><div><b>Secure &amp; Private</b><small>Your data stays in your own database</small></div></div>
+</section>
+
+<section class="about" id="about">
+  <h2>About SmartResume</h2>
+  <p>SmartResume is a simple resume builder. Fill in a short form, get a clean resume,
+     see a 0&ndash;100 strength score with suggestions, and view the verified companies whose
+     required skills match yours.</p>
+</section>
+{% endblock %}

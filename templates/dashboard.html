@@ -1,0 +1,44 @@
+{% extends "app_layout.html" %}
+{% block title %}Dashboard - SmartResume{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Hello, {{ user.name }}! &#128075;</h1>
+    <p>Build your resume, track your progress and get the best out of your skills.</p>
+  </div>
+  <div class="user-pill"><span class="avatar-sm">{{ user.name[:1]|upper }}</span> {{ user.name }}</div>
+</div>
+
+<div class="stats">
+  <div class="card stat"><div class="ic">&#128196;</div><div><small>Total Resumes</small><b>{{ total }}</b></div></div>
+  <div class="card stat"><div class="ic">&#128161;</div><div><small>Strength Checks</small><b>{{ analysed }}</b></div></div>
+  <div class="card stat"><div class="ic">&#9989;</div><div><small>Profile Completed</small><b>{{ profile_pct }}%</b></div></div>
+  <div class="card stat"><div class="ic">&#128100;</div><div><small>Last Login</small><b style="font-size:18px">{{ last_login }}</b></div></div>
+</div>
+
+<div class="section-title">Quick Actions</div>
+<div class="quick">
+  <a class="card" href="{{ url_for('create_resume') }}"><span class="ic">&#128221;</span><b>Create New Resume</b><small>Build a professional resume from scratch</small></a>
+  <a class="card" href="{{ url_for('strength') }}"><span class="ic">&#128737;</span><b>Upload Resume</b><small>Check your resume strength and get suggestions</small></a>
+  <a class="card" href="{{ url_for('my_resumes') }}"><span class="ic">&#128193;</span><b>View My Resumes</b><small>Manage your saved resumes and matches</small></a>
+</div>
+
+<div class="section-title">Recent Resumes</div>
+<div class="card">
+  {% if resumes %}
+  <table>
+    <tr><th>Title</th><th>Last Updated</th><th>Strength</th><th>Action</th></tr>
+    {% for r in resumes %}
+    <tr>
+      <td>{{ r.title }}</td>
+      <td>{{ r.updated_at|day }}</td>
+      <td><span class="badge {{ r.strength|tone }}">{{ r.strength }}%</span></td>
+      <td><a class="btn outline small" href="{{ url_for('view_resume', resume_id=r.id) }}">View</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p class="empty">No resumes yet. <a href="{{ url_for('create_resume') }}">Create your first resume</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}
